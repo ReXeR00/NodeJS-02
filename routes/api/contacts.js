@@ -1,15 +1,16 @@
 const express = require("express");
 const Joi = require("joi");
+const { addContact } = require("../../models/contacts.models");
 
 const router = express.Router();
 
 const contactSchema = Joi.object({
-  id: Joi.string().required(),
+  id: Joi.string(),
   name: Joi.string().required(),
   email: Joi.string().email().required(),
   phone: Joi.string()
     .required()
-    .pattern(/\([0-9]{3}\) [0-9]{3}-[0-9]{4}/),
+    .pattern(/^\(\d{3}\) \d{3}-\d{4}$/),
 });
 
 router.get("/", async (req, res) => {
@@ -30,7 +31,6 @@ router.post("/", async (req, res) => {
   const newContact = await addContact(req.body);
   res.json(newContact);
 });
-
 
 router.delete("/:contactId", async (req, res) => {
   res.json({ message: "template message" });
