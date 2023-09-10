@@ -3,6 +3,8 @@ const path = require("path");
 
 const contactsPath = path.join(__dirname, "contact.json");
 
+
+
 const listContacts = async () => {
   const data = await fs.readFile(contactsPath, "utf8");
   return JSON.parse(data);
@@ -10,7 +12,7 @@ const listContacts = async () => {
 
 const getContactById = async (contactId) => {
   const contacts = await listContacts();
-  return contacts.find(contact => contact.id === contactId);
+  return contacts.find((contact) => contact.id === contactId);
 };
 
 const removeContact = async (contactId) => {
