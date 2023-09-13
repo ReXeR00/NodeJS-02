@@ -4,6 +4,8 @@ const {
   addContact,
   listContacts,
   removeContact,
+  getContactById,
+  updateContact,
 } = require("../../models/contacts.models");
 
 const router = express.Router();
@@ -28,13 +30,13 @@ router.get("/", async (req, res) => {
 
 router.get("/:contactId", async (req, res) => {
   try {
-    contact = await getById(req.params.contactId);
+    const contact = await getContactById(req.params.contactId);
     if (!contact) {
-      return res.status(404).json({ massage: "Not found" });
+      return res.status(404).json({ message: "Not found" });
     }
     res.status(200).json({ contact });
   } catch (err) {
-    res.status(500).json({ massage: "Error retrieving the contact" });
+    res.status(500).json({ message: "Error retrieving the contact" });
   }
 });
 
@@ -67,7 +69,7 @@ router.delete("/:contactId", async (req, res) => {
       res.status(404).json({ message: "Not found" });
     }
   } catch (error) {
-    res.status(500).json({ message: "Błąd podczas usuwania kontaktu" });
+    res.status(500).json({ message: "Error during delete contact" });
   }
 });
 
@@ -77,9 +79,9 @@ router.put("/:contactId", async (req, res) => {
   }
 
   try {
-    const updatedContact = await updateContact(req.params.contactId, req.body);
-    if (updatedContact) {
-      res.status(200).json(updatedContact);
+    const contact = await updateContact(req.params.contactId, req.body);
+    if (contact) {
+      res.status(200).json(contact);
     } else {
       res.status(404).json({ message: "Not found" });
     }
